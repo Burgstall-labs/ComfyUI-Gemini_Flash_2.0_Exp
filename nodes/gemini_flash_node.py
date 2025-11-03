@@ -87,7 +87,7 @@ class GeminiFlash:
             "required": {
                 "prompt": ("STRING", {"default": "Analyze the situation in details.", "multiline": True}),
                 "input_type": (["text", "image", "video", "audio"], {"default": "text"}),
-                "model_version": (["gemini-2.0-flash-exp", "gemini-2.0-flash-thinking-exp-1219", "gemini-2.0-flash-exp-image-generation"], {"default": "gemini-2.0-flash-exp"}),
+                "model_version": (["gemini-2.5-flash-preview-05-20", "gemini-2.0-flash-exp", "gemini-2.0-flash-thinking-exp-1219", "gemini-2.0-flash-exp-image-generation"], {"default": "gemini-2.0-flash-exp"}),
                 "operation_mode": (["analysis", "generate_images"], {"default": "analysis"}),
                 "chat_mode": ("BOOLEAN", {"default": False}),
                 "clear_history": ("BOOLEAN", {"default": False})
@@ -98,7 +98,7 @@ class GeminiFlash:
                 "video": ("IMAGE", ),
                 "audio": ("AUDIO", ),
                 "api_key": ("STRING", {"default": ""}),
-                "max_output_tokens": ("INT", {"default": 8192, "min": 1, "max": 8192}),
+                "max_output_tokens": ("INT", {"default": 8192, "min": 1, "max": 65536}),
                 "temperature": ("FLOAT", {"default": 0.4, "min": 0.0, "max": 1.0, "step": 0.1}),
                 "structured_output": ("BOOLEAN", {"default": False}),
                 "max_images": ("INT", {"default": 6, "min": 1, "max": 16, "step": 1}),
