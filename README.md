@@ -1,6 +1,21 @@
-Updated endpoints
+Updated endpoints. PLEASE NOTE:
+You will need a "config.json" file with your Gemini (free) API key in the main folder, with this content:
 
+---
 
+{
+    "GEMINI_NODE_API_KEY": "your-key-here",
+    "PROXY": ""
+}
+
+---
+
+Get your free API key from Google AI Studio:
+   - Visit [Google AI Studio](https://aistudio.google.com/prompts/new_chat)
+   - Log in with your Google account
+   - Click on "Get API key" or go to settings
+   - Create a new API key
+   - Copy the API key for use in config.json
 
 
 # ComfyUI-Gemini_Flash_2.0_Exp
