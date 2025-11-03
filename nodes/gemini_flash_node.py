@@ -10,7 +10,7 @@ import torch
 import torchaudio
 import numpy as np
 
-p = os.path.dirname(os.path.realpath(__file__))
+p = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 def get_config():
     try:
@@ -57,23 +57,13 @@ class ChatHistory:
 
 class GeminiFlash:
     def __init__(self, api_key=None):
-        env_key = os.environ.get("GEMINI_API_KEY")
+        # --- MODIFIED: Directly load the configuration from the file. ---
+        config = get_config()
+        
+        # --- MODIFIED: Get the API key ONLY from the config.json file. ---
+        self.api_key = config.get("GEMINI_NODE_API_KEY")
 
-        # Common placeholder values to ignore
-        placeholders = {"token_here", "place_token_here", "your_api_key",
-                        "api_key_here", "enter_your_key", "<api_key>"}
-
-        if env_key and env_key.lower().strip() not in placeholders:
-            self.api_key = env_key
-        else:
-            # Try the provided api_key parameter
-            self.api_key = api_key
-
-            # If still not found, try to get from config
-            if self.api_key is None:
-                config = get_config()
-                self.api_key = config.get("GEMINI_API_KEY")
-
+        # The rest of the original setup logic remains the same.
         self.chat_history = ChatHistory()
         if self.api_key is not None:
             self.configure_genai()
@@ -87,7 +77,7 @@ class GeminiFlash:
             "required": {
                 "prompt": ("STRING", {"default": "Analyze the situation in details.", "multiline": True}),
                 "input_type": (["text", "image", "video", "audio"], {"default": "text"}),
-                "model_version": (["gemini-2.5-flash-preview-05-20", "gemini-2.0-flash-exp", "gemini-2.0-flash-thinking-exp-1219", "gemini-2.0-flash-exp-image-generation"], {"default": "gemini-2.0-flash-exp"}),
+                "model_version": (["gemini-2.5-flash-preview-05-20", "gemini-flash-latest", "gemini-pro-latest", "gemini-2.5-flash-preview-09-2025"], {"default": "gemini-flash-latest"}),
                 "operation_mode": (["analysis", "generate_images"], {"default": "analysis"}),
                 "chat_mode": ("BOOLEAN", {"default": False}),
                 "clear_history": ("BOOLEAN", {"default": False})
@@ -452,6 +442,18 @@ class GeminiFlash:
                         api_key="", max_images=6, batch_count=1, seed=0,
                         max_output_tokens=8192, temperature=0.4, structured_output=False):
         """Generate content using Gemini model with various input types."""
+
+        # --- DEBUG CODE TO SHOW THE API KEY ---
+        if self.api_key:
+            # Print the first 5 and last 4 characters of the key to identify it
+            print(f"--- [Gemini Node Debug] ---")
+            print(f"Attempting to use API Key: {self.api_key[:5]}...{self.api_key[-4:]}")
+            print(f"---------------------------")
+        else:
+            print(f"--- [Gemini Node Debug] ---")
+            print(f"API Key is NOT SET (None).")
+            print(f"---------------------------")
+        # --- END DEBUG CODE ---
         
         # Set all safety settings to block_none by default
         safety_settings = [
